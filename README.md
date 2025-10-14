@@ -3,11 +3,17 @@
 Kevin:
 
 data_warga_rumah/warga_daftar_screen.dart
+
 data_warga_rumah/warga_tambah_screen.dart
+
 data_warga_rumah/keluarga_screen.dart
+
 data_warga_rumah/rumah_daftar_screen.dart
+
 data_warga_rumah/rumah_tambah_screen.dart
+
 pengeluaran/pengeluaran_daftar_screen.dart
+
 pengeluaran/pengeluaran_tambah_screen.dart
 
 Chiko:
