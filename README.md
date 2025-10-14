@@ -1,8 +1,8 @@
 # **Pembagian Tugas**
 
 Kevin:
-data_warga_rumah/warga_daftar_screen.dart
 
+data_warga_rumah/warga_daftar_screen.dart
 data_warga_rumah/warga_tambah_screen.dart
 data_warga_rumah/keluarga_screen.dart
 data_warga_rumah/rumah_daftar_screen.dart
@@ -11,6 +11,7 @@ pengeluaran/pengeluaran_daftar_screen.dart
 pengeluaran/pengeluaran_tambah_screen.dart
 
 Chiko:
+
 pemasukan/kategori_iuran_screen.dart
 pemasukan/tagih_iuran_screen.dart
 pemasukan/tagihan_screen.dart
@@ -20,6 +21,7 @@ pesan_warga/informasi_aspirasi_screen.dart
 penerimaan_warga/penerimaan_warga_screen.dart
 
 Rengga:
+
 kegiatan_broadcast/kegiatan_daftar_screen.dart
 kegiatan_broadcast/kegiatan_tambah_screen.dart
 kegiatan_broadcast/broadcast_daftar_screen.dart
@@ -29,6 +31,7 @@ mutasi_keluarga/mutasi_tambah_screen.dart
 log_aktifitas/semua_aktifitas_screen.dart
 
 Tionusa:
+
 laporan_keuangan/laporan_pemasukan_screen.dart
 laporan_keuangan/laporan_pengeluaran_screen.dart
 laporan_keuangan/cetak_laporan_screen.dart
@@ -38,6 +41,7 @@ channel_transter/channel_daftar_screen.dart
 channel_transter/channel_tambah_screen.dart
 
 Raul:
+
 auth/login_screen.dart
 auth/register_screen.dart
 dashboard/keuangan_screen.dart
