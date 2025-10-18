@@ -51,6 +51,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - img/login_background.jpeg
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto/static/Roboto-Regular.ttf
+        - asset: fonts/Roboto/static/Roboto-Bold.ttf
+          weight: 700
+      
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
