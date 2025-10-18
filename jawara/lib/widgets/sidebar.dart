@@ -11,6 +11,7 @@ class _SidebarState extends State<Sidebar> {
   Map<String, bool> _expandedSections = {
     'Dashboard': false,
     'Data Warga & Rumah': false,
+    'Kegiatan & Broadcast': false,
   };
 
   @override
@@ -112,6 +113,47 @@ class _SidebarState extends State<Sidebar> {
                 'Tambah Rumah',
                 '/rumah/tambah',
                 Icons.add_home,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
+          // Kegiatan & Broadcast Section
+          ExpansionTile(
+            title: Text(
+              'Kegiatan & Broadcast',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.event_note, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Kegiatan - Daftar',
+                '/kegiatan/daftar',
+                Icons.list_alt,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Kegiatan - Tambah',
+                '/kegiatan/tambah',
+                Icons.add_circle_outline,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Broadcast - Daftar',
+                '/broadcast/daftar',
+                Icons.broadcast_on_personal,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Broadcast - Tambah',
+                '/broadcast/tambah',
+                Icons.add_box,
                 indent: 16,
               ),
             ],
