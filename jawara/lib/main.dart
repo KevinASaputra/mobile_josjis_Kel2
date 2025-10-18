@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
 import 'screens/dashboard/keuangan_screen.dart';
+import 'screens/dashboard/kegiatan_screen.dart';
+import 'screens/dashboard/kependudukan_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,9 +22,12 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
+        '/': (context) => const LoginScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/dashboard/keuangan': (context) => const KeuanganScreen(),
+        '/dashboard/kegiatan': (context) => const KegiatanScreen(),
+        '/dashboard/kependudukan': (context) => const KependudukanScreen(),
       },
     );
   }

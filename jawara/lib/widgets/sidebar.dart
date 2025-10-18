@@ -133,11 +133,13 @@ class _SidebarState extends State<Sidebar> {
     return Padding(
       padding: EdgeInsets.only(left: indent),
       child: ListTile(
-        leading: Icon(icon, size: 20),
-        title: Text(title, style: const TextStyle(fontSize: 14)),
+        leading: Icon(icon, size: 20, color: Colors.black),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 14, color: Colors.black),
+        ),
         onTap: () {
-          Navigator.pushReplacementNamed(context, route);
-          Navigator.pop(context); // Close drawer
+          Navigator.of(context).pushReplacementNamed(route);
         },
         dense: true,
       ),
