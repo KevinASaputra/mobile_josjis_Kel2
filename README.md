@@ -12,10 +12,6 @@ data_warga_rumah/rumah_daftar_screen.dart
 
 data_warga_rumah/rumah_tambah_screen.dart
 
-pengeluaran/pengeluaran_daftar_screen.dart
-
-pengeluaran/pengeluaran_tambah_screen.dart
-
 Chiko:
 
 pemasukan/kategori_iuran_screen.dart
@@ -30,8 +26,6 @@ pemasukan/pemasukan_lain_tambah_screen.dart
 
 pesan_warga/informasi_aspirasi_screen.dart
 
-penerimaan_warga/penerimaan_warga_screen.dart
-
 Rengga:
 
 kegiatan_broadcast/kegiatan_daftar_screen.dart
@@ -42,10 +36,6 @@ kegiatan_broadcast/broadcast_daftar_screen.dart
 
 kegiatan_broadcast/broadcast_tambah_screen.dart
 
-mutasi_keluarga/mutasi_daftar_screen.dart
-
-mutasi_keluarga/mutasi_tambah_screen.dart
-
 log_aktifitas/semua_aktifitas_screen.dart
 
 Tionusa:
@@ -55,6 +45,18 @@ laporan_keuangan/laporan_pemasukan_screen.dart
 laporan_keuangan/laporan_pengeluaran_screen.dart
 
 laporan_keuangan/cetak_laporan_screen.dart
+
+penerimaan_warga/penerimaan_warga_screen.dart
+
+mutasi_keluarga/mutasi_daftar_screen.dart
+
+mutasi_keluarga/mutasi_tambah_screen.dart
+
+Attadewa:
+
+pengeluaran/pengeluaran_daftar_screen.dart
+
+pengeluaran/pengeluaran_tambah_screen.dart
 
 manajemen_pengguna/pengguna_daftar_screen.dart
 
