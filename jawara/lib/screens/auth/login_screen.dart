@@ -156,7 +156,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/dashboard');
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/dashboard/keuangan',
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF6666FF),
