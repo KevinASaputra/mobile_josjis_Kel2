@@ -4,6 +4,8 @@ import 'screens/auth/register_screen.dart';
 import 'screens/dashboard/keuangan_screen.dart';
 import 'screens/dashboard/kegiatan_screen.dart';
 import 'screens/dashboard/kependudukan_screen.dart';
+import 'package:jawara/screens/kegiatan_broadcast/kegiatan_daftar_screen.dart';
+import 'package:jawara/screens/kegiatan_broadcast/broadcast_daftar_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +30,8 @@ class MyApp extends StatelessWidget {
         '/dashboard/keuangan': (context) => const KeuanganScreen(),
         '/dashboard/kegiatan': (context) => const KegiatanScreen(),
         '/dashboard/kependudukan': (context) => const KependudukanScreen(),
+        '/kegiatan/daftar': (context) => const KegiatanDaftarScreen(),
+        '/broadcast/daftar': (context) => const BroadcastDaftarScreen(),
       },
     );
   }
