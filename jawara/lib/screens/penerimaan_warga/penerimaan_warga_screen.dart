@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/sidebar.dart';
+import 'penerimaan_warga_detail_screen.dart';
+import 'penerimaan_warga_edit_screen.dart';
 
 class PenerimaanWargaScreen extends StatefulWidget {
   const PenerimaanWargaScreen({super.key});
@@ -41,6 +43,45 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
       'status': 'Ditolak',
     },
   ];
+
+  // filter state
+  String? _filterNama;
+  String _filterJenisKelamin = 'Semua';
+  String _filterStatus = 'Semua';
+
+  List<String> get _jenisKelaminOptions {
+    final set = <String>{};
+    for (var e in registrasiData) {
+      if (e['jenisKelamin'] != null) set.add(e['jenisKelamin'] as String);
+    }
+    final list = set.toList()..sort();
+    return ['Semua', ...list];
+  }
+
+  List<String> get _statusOptions {
+    final set = <String>{};
+    for (var e in registrasiData) {
+      if (e['status'] != null) set.add(e['status'] as String);
+    }
+    final list = set.toList()..sort();
+    return ['Semua', ...list];
+  }
+
+  List<Map<String, dynamic>> get _filteredRegistrasiData {
+    return registrasiData.where((item) {
+      final matchesNama = _filterNama == null || _filterNama!.isEmpty
+          ? true
+          : (item['nama']?.toString().toLowerCase() ?? '').contains(
+              _filterNama!.toLowerCase(),
+            );
+      final matchesJenis =
+          _filterJenisKelamin == 'Semua' ||
+          item['jenisKelamin'] == _filterJenisKelamin;
+      final matchesStatus =
+          _filterStatus == 'Semua' || item['status'] == _filterStatus;
+      return matchesNama && matchesJenis && matchesStatus;
+    }).toList();
+  }
 
   Color _statusColor(String status) {
     switch (status) {
@@ -97,28 +138,49 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
             ),
             child: Column(
               children: [
+                // Filter button (opens dialog)
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6366F1),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final result = await showDialog<Map<String, String>>(
+                          context: context,
+                          builder: (context) => _FilterDialog(
+                            nama: _filterNama,
+                            jenisKelamin: _filterJenisKelamin,
+                            status: _filterStatus,
+                            jenisOptions: _jenisKelaminOptions,
+                            statusOptions: _statusOptions,
+                          ),
+                        );
+                        if (result != null) {
+                          setState(() {
+                            _filterNama = result['nama']?.isEmpty == true
+                                ? null
+                                : result['nama'];
+                            _filterJenisKelamin = result['jenis'] ?? 'Semua';
+                            _filterStatus = result['status'] ?? 'Semua';
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6366F1),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: IconButton(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                            size: 20,
-                          ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 18,
                         ),
+                        elevation: 0,
                       ),
-                    ],
+                      child: const Icon(Icons.filter_list, color: Colors.white),
+                    ),
                   ),
                 ),
+
                 Expanded(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -126,7 +188,7 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
                     child: DataTable(
                       columnSpacing: 40,
                       headingRowHeight: 60,
-                      dataRowHeight: 60,
+                      dataRowHeight: 72,
                       headingRowColor: MaterialStateProperty.all(
                         Colors.transparent,
                       ),
@@ -151,14 +213,14 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
                         DataColumn(label: Text('STATUS\nREGISTRASI')),
                         DataColumn(label: Text('AKSI')),
                       ],
-                      rows: registrasiData.map((item) {
+                      rows: _filteredRegistrasiData.map((item) {
                         return DataRow(
                           cells: [
                             DataCell(Text(item['no'].toString())),
-                            DataCell(Text(item['nama'])),
-                            DataCell(Text(item['nik'])),
-                            DataCell(Text(item['email'])),
-                            DataCell(Text(item['jenisKelamin'])),
+                            DataCell(Text(item['nama'] ?? '-')),
+                            DataCell(Text(item['nik'] ?? '-')),
+                            DataCell(Text(item['email'] ?? '-')),
+                            DataCell(Text(item['jenisKelamin'] ?? '-')),
                             DataCell(
                               GestureDetector(
                                 onTap: () {
@@ -178,9 +240,15 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
                                               ),
                                             ),
                                             const SizedBox(height: 16),
-                                            Image.asset(
-                                              'img/${item['fotoIdentitas']}',
-                                              fit: BoxFit.contain,
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                maxWidth: 400,
+                                                maxHeight: 400,
+                                              ),
+                                              child: Image.asset(
+                                                'img/${item['fotoIdentitas']}',
+                                                fit: BoxFit.contain,
+                                              ),
                                             ),
                                           ],
                                         ),
@@ -233,67 +301,59 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
                                 onSelected: (value) {
                                   switch (value) {
                                     case 'detail':
-                                      // Show detail dialog
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PenerimaanWargaDetailScreen(
+                                                data: item,
+                                              ),
+                                        ),
+                                      );
                                       break;
                                     case 'edit':
                                       if (item['status'] != 'Diterima') {
-                                        // Show edit dialog
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                PenerimaanWargaEditScreen(
+                                                  data: item,
+                                                ),
+                                          ),
+                                        );
                                       }
                                       break;
                                   }
                                 },
                                 itemBuilder: (BuildContext context) => [
-                                  PopupMenuItem<String>(
+                                  const PopupMenuItem<String>(
                                     value: 'detail',
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 8,
-                                      ),
-                                      child: const Row(
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.visibility_outlined,
+                                          size: 18,
+                                          color: Color(0xFF64748B),
+                                        ),
+                                        SizedBox(width: 12),
+                                        Text('Detail'),
+                                      ],
+                                    ),
+                                  ),
+                                  if (item['status'] != 'Diterima')
+                                    const PopupMenuItem<String>(
+                                      value: 'edit',
+                                      child: Row(
                                         children: [
                                           Icon(
-                                            Icons.visibility_outlined,
+                                            Icons.edit_outlined,
                                             size: 18,
                                             color: Color(0xFF64748B),
                                           ),
                                           SizedBox(width: 12),
-                                          Text(
-                                            'Detail',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xFF1E293B),
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
+                                          Text('Edit'),
                                         ],
-                                      ),
-                                    ),
-                                  ),
-                                  if (item['status'] != 'Diterima')
-                                    PopupMenuItem<String>(
-                                      value: 'edit',
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 8,
-                                        ),
-                                        child: const Row(
-                                          children: [
-                                            Icon(
-                                              Icons.edit_outlined,
-                                              size: 18,
-                                              color: Color(0xFF64748B),
-                                            ),
-                                            SizedBox(width: 12),
-                                            Text(
-                                              'Edit',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Color(0xFF1E293B),
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
                                       ),
                                     ),
                                 ],
@@ -305,6 +365,7 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
                     ),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Row(
@@ -364,6 +425,103 @@ class _PenerimaanWargaScreenState extends State<PenerimaanWargaScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+// --- Filter Dialog ---
+class _FilterDialog extends StatefulWidget {
+  final String? nama;
+  final String jenisKelamin;
+  final String status;
+  final List<String> jenisOptions;
+  final List<String> statusOptions;
+
+  const _FilterDialog({
+    this.nama,
+    required this.jenisKelamin,
+    required this.status,
+    required this.jenisOptions,
+    required this.statusOptions,
+  });
+
+  @override
+  State<_FilterDialog> createState() => _FilterDialogState();
+}
+
+class _FilterDialogState extends State<_FilterDialog> {
+  late TextEditingController _namaController;
+  late String _jenis;
+  late String _status;
+
+  @override
+  void initState() {
+    super.initState();
+    _namaController = TextEditingController(text: widget.nama);
+    _jenis = widget.jenisKelamin;
+    _status = widget.status;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      title: const Text('Filter Penerimaan Warga'),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _namaController,
+              decoration: const InputDecoration(labelText: 'Nama'),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              value: _jenis,
+              items: widget.jenisOptions
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) => setState(() => _jenis = v ?? 'Semua'),
+              decoration: const InputDecoration(labelText: 'Jenis Kelamin'),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              value: _status,
+              items: widget.statusOptions
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) => setState(() => _status = v ?? 'Semua'),
+              decoration: const InputDecoration(labelText: 'Status'),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            setState(() {
+              _namaController.clear();
+              _jenis = 'Semua';
+              _status = 'Semua';
+            });
+          },
+          child: const Text('Reset'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop({
+              'nama': _namaController.text,
+              'jenis': _jenis,
+              'status': _status,
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF6366F1),
+          ),
+          child: const Text('Terapkan', style: TextStyle(color: Colors.white)),
+        ),
+      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/sidebar.dart';
+import 'mutasi_detail_screen.dart'; // added import
 
 class MutasiDaftarScreen extends StatefulWidget {
   const MutasiDaftarScreen({super.key});
@@ -26,6 +27,41 @@ class _MutasiDaftarScreenState extends State<MutasiDaftarScreen> {
       'jenis': 'Pindah Rumah',
     },
   ];
+
+  // --- added filter state ---
+  String _selectedJenisFilter = 'Semua';
+  String _selectedKeluargaFilter = 'Semua';
+
+  List<String> get _keluargaOptions {
+    final set = <String>{};
+    for (var e in mutasiData) {
+      if (e['keluarga'] != null) set.add(e['keluarga'] as String);
+    }
+    final list = set.toList()..sort();
+    return ['Semua', ...list];
+  }
+
+  List<String> get _jenisOptions {
+    final set = <String>{};
+    for (var e in mutasiData) {
+      if (e['jenis'] != null) set.add(e['jenis'] as String);
+    }
+    final list = set.toList()..sort();
+    return ['Semua', ...list];
+  }
+
+  List<Map<String, dynamic>> get _filteredMutasiData {
+    return mutasiData.where((item) {
+      final matchesJenis =
+          _selectedJenisFilter == 'Semua' ||
+          item['jenis'] == _selectedJenisFilter;
+      final matchesKeluarga =
+          _selectedKeluargaFilter == 'Semua' ||
+          item['keluarga'] == _selectedKeluargaFilter;
+      return matchesJenis && matchesKeluarga;
+    }).toList();
+  }
+  // --- end added filter state ---
 
   Color _jenisColor(String jenis) {
     if (jenis == 'Keluar Wilayah') {
@@ -74,28 +110,43 @@ class _MutasiDaftarScreenState extends State<MutasiDaftarScreen> {
             ),
             child: Column(
               children: [
+                // header replaced with filter button (design like pengeluaran_daftar_screen)
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6366F1),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final result = await showDialog<Map<String, String>>(
+                          context: context,
+                          builder: (context) => _FilterDialog(
+                            selectedJenis: _selectedJenisFilter,
+                            selectedKeluarga: _selectedKeluargaFilter,
+                            jenisOptions: _jenisOptions,
+                            keluargaOptions: _keluargaOptions,
+                          ),
+                        );
+                        if (result != null) {
+                          setState(() {
+                            _selectedJenisFilter = result['jenis'] ?? 'Semua';
+                            _selectedKeluargaFilter =
+                                result['keluarga'] ?? 'Semua';
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6366F1),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: IconButton(
-                          onPressed: () {
-                            // filter action (implement as needed)
-                          },
-                          icon: const Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                            size: 20,
-                          ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 18,
                         ),
+                        elevation: 0,
                       ),
-                    ],
+                      child: const Icon(Icons.filter_list, color: Colors.white),
+                    ),
                   ),
                 ),
                 Expanded(
@@ -128,7 +179,8 @@ class _MutasiDaftarScreenState extends State<MutasiDaftarScreen> {
                         DataColumn(label: Text('JENIS MUTASI')),
                         DataColumn(label: Text('AKSI')),
                       ],
-                      rows: mutasiData.map((item) {
+                      // use filtered data here
+                      rows: _filteredMutasiData.map((item) {
                         return DataRow(
                           cells: [
                             DataCell(Text(item['no'].toString())),
@@ -167,38 +219,13 @@ class _MutasiDaftarScreenState extends State<MutasiDaftarScreen> {
                                 color: Colors.white,
                                 onSelected: (value) {
                                   if (value == 'detail') {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                            'Detail Mutasi Keluarga',
-                                          ),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Tanggal: ${item['tanggal']}',
-                                              ),
-                                              Text(
-                                                'Keluarga: ${item['keluarga']}',
-                                              ),
-                                              Text(
-                                                'Jenis Mutasi: ${item['jenis']}',
-                                              ),
-                                            ],
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: const Text('Tutup'),
-                                            ),
-                                          ],
-                                        );
-                                      },
+                                    // navigate to detail screen (replaces inline dialog)
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            MutasiDetailScreen(data: item),
+                                      ),
                                     );
                                   }
                                 },
@@ -297,6 +324,101 @@ class _MutasiDaftarScreenState extends State<MutasiDaftarScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _FilterDialog extends StatefulWidget {
+  final String selectedJenis;
+  final String selectedKeluarga;
+  final List<String> jenisOptions;
+  final List<String> keluargaOptions;
+
+  const _FilterDialog({
+    required this.selectedJenis,
+    required this.selectedKeluarga,
+    required this.jenisOptions,
+    required this.keluargaOptions,
+  });
+
+  @override
+  State<_FilterDialog> createState() => _FilterDialogState();
+}
+
+class _FilterDialogState extends State<_FilterDialog> {
+  late String? _jenis;
+  late String? _keluarga;
+
+  @override
+  void initState() {
+    super.initState();
+    _jenis = widget.selectedJenis;
+    _keluarga = widget.selectedKeluarga;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      title: const Text('Filter Mutasi Keluarga'),
+      content: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: 400),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(labelText: 'Jenis Mutasi'),
+              value: _jenis,
+              items: widget.jenisOptions
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) => setState(() => _jenis = v),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              decoration: const InputDecoration(labelText: 'Keluarga'),
+              value: _keluarga,
+              items: widget.keluargaOptions
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) => setState(() => _keluarga = v),
+            ),
+          ],
+        ),
+      ),
+      actionsPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      actions: [
+        SizedBox(
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _jenis = 'Semua';
+                    _keluarga = 'Semua';
+                  });
+                },
+                child: const Text('Reset'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop({
+                    'jenis': _jenis ?? 'Semua',
+                    'keluarga': _keluarga ?? 'Semua',
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF6366F1),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text('Terapkan'),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
