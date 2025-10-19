@@ -15,6 +15,12 @@ import 'package:jawara/screens/log_aktifitas/semua_aktifitas_screen.dart';
 import 'package:jawara/screens/mutasi_keluarga/mutasi_daftar_screen.dart';
 import 'package:jawara/screens/mutasi_keluarga/mutasi_tambah_screen.dart';
 import 'package:jawara/screens/penerimaan_warga/penerimaan_warga_screen.dart';
+import 'package:jawara/screens/manajemen_pengguna/pengguna_daftar_screen.dart';
+import 'package:jawara/screens/manajemen_pengguna/pengguna_tambah_screen.dart';
+import 'package:jawara/screens/channel_transfer/channel_daftar_screen.dart';
+import 'package:jawara/screens/channel_transfer/channel_tambah_screen.dart';
+import 'package:jawara/screens/pengeluaran/pengeluaran_daftar_screen.dart';
+import 'package:jawara/screens/pengeluaran/pengeluaran_tambah_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,6 +58,12 @@ class MyApp extends StatelessWidget {
         '/mutasi-keluarga/daftar': (context) => const MutasiDaftarScreen(),
         '/mutasi-keluarga/tambah': (context) => const MutasiTambahScreen(),
         '/penerimaan-warga/daftar': (context) => const PenerimaanWargaScreen(),
+        '/manajemen-pengguna/daftar': (context) => const PenggunaDaftarScreen(),
+        '/manajemen-pengguna/tambah': (context) => const PenggunaTambahScreen(),
+        '/channel-transfer/daftar': (context) => const ChannelDaftarScreen(),
+        '/channel-transfer/tambah': (context) => const ChannelTambahScreen(),
+        '/pengeluaran/daftar': (context) => const PengeluaranDaftarScreen(),
+        '/pengeluaran/tambah': (context) => const PengeluaranTambahScreen(),
       },
     );
   }
