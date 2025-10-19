@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   file_picker: ^8.0.6
+  fl_chart: ^0.64.0   
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +54,19 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - img/login_background.jpeg
+    - img/ijat.jpeg
+    - img/waguri.jpeg
+    - img/prabowo.png
+
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto/static/Roboto-Regular.ttf
+        - asset: fonts/Roboto/static/Roboto-Bold.ttf
+          weight: 700
+      
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
