@@ -55,6 +55,9 @@ dev_dependencies:
 flutter:
   assets:
     - img/login_background.jpeg
+    - img/ijat.jpeg
+    - img/waguri.jpeg
+    - img/prabowo.png
 
   fonts:
     - family: Roboto

@@ -10,8 +10,10 @@ class Sidebar extends StatefulWidget {
 class _SidebarState extends State<Sidebar> {
   Map<String, bool> _expandedSections = {
     'Dashboard': false,
+    'Laporan Keuangan': false,
     'Data Warga & Rumah': false,
     'Kegiatan & Broadcast': false,
+    'Penerimaan Warga': false,
     'Log Aktifitas': false,
   };
 
@@ -121,6 +123,40 @@ class _SidebarState extends State<Sidebar> {
 
           const Divider(),
 
+          // Laporan Keuangan Section
+          ExpansionTile(
+            title: Text(
+              'Laporan Keuangan',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.receipt_long, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Semua Pemasukan',
+                '/laporan-keuangan/pemasukan',
+                Icons.monetization_on,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Semua Pengeluaran',
+                '/laporan-keuangan/pengeluaran',
+                Icons.money_off,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Cetak Laporan',
+                '/laporan-keuangan/cetak',
+                Icons.print,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
           // Kegiatan & Broadcast Section
           ExpansionTile(
             title: Text(
@@ -159,7 +195,54 @@ class _SidebarState extends State<Sidebar> {
               ),
             ],
           ),
-          
+
+          const Divider(),
+
+          // Penerimaan Warga Section
+          ExpansionTile(
+            title: Text(
+              'Penerimaan Warga',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.person_add, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Penerimaan Warga',
+                '/penerimaan-warga/daftar',
+                Icons.list_alt,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
+          // Mutasi Keluarga Section
+          ExpansionTile(
+            title: Text(
+              'Mutasi Keluarga',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.swap_horiz, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Daftar',
+                '/mutasi-keluarga/daftar',
+                Icons.list,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Tambah',
+                '/mutasi-keluarga/tambah',
+                Icons.add,
+                indent: 16,
+              ),
+            ],
+          ),
+
           const Divider(),
 
           ExpansionTile(
