@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pengguna_detail_screen.dart';
 import 'pengguna_edit_screen.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class PenggunaDaftarScreen extends StatefulWidget {
   const PenggunaDaftarScreen({super.key});
@@ -12,7 +13,6 @@ class PenggunaDaftarScreen extends StatefulWidget {
 
 class _PenggunaDaftarScreenState extends State<PenggunaDaftarScreen> {
   final Color primaryColor = const Color(0xFF635BFF);
-  final Color bgColor = const Color(0xFFF5F7FB);
 
   final List<Map<String, String>> data = [
     {
@@ -69,20 +69,9 @@ class _PenggunaDaftarScreenState extends State<PenggunaDaftarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        title: Text(
-          'Daftar Pengguna',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: bgColor,
-        elevation: 0,
-      ),
-      body: LayoutBuilder(
+    return DashboardLayout(
+      title: 'Daftar Pengguna',
+      child: LayoutBuilder(
         builder: (context, constraints) {
           bool isMobile = constraints.maxWidth < 700;
 

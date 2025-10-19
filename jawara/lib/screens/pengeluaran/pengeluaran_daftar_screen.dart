@@ -172,11 +172,11 @@ class PengeluaranDaftarScreen extends StatelessWidget {
                                                         .context
                                                         .findRenderObject()
                                                     as RenderBox;
-                                            final Offset buttonPosition =
-                                                button.localToGlobal(
-                                              Offset.zero,
-                                              ancestor: overlay,
-                                            );
+                                            final Offset buttonPosition = button
+                                                .localToGlobal(
+                                                  Offset.zero,
+                                                  ancestor: overlay,
+                                                );
 
                                             showMenu<String>(
                                               context: context,

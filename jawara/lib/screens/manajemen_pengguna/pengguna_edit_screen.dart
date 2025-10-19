@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class PenggunaEditScreen extends StatelessWidget {
   final String nama;
@@ -26,146 +27,132 @@ class PenggunaEditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color bgColor = Color(0xFFF5F7FB);
     const Color primaryColor = Color(0xFF635BFF);
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Tombol kembali
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.arrow_back, size: 20, color: primaryColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Kembali',
-                      style: GoogleFonts.inter(
-                        color: primaryColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+    return DashboardLayout(
+      title: 'Edit Akun Pengguna',
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Tombol kembali
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.arrow_back, size: 20, color: primaryColor),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Kembali',
+                    style: GoogleFonts.inter(
+                      color: primaryColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            // Card form
+            LayoutBuilder(
+              builder: (context, constraints) {
+                bool isMobile = constraints.maxWidth < 700;
+
+                return Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(24),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12.withOpacity(0.05),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildLabel('Nama Lengkap'),
+                      _buildTextField(controller: namaController),
 
-              // Judul
-              Text(
-                'Edit Akun Pengguna',
-                style: GoogleFonts.inter(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 20),
+                      _buildLabel('Email'),
+                      _buildTextField(controller: emailController),
 
-              // Card form
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  bool isMobile = constraints.maxWidth < 700;
+                      _buildLabel('Nomor HP'),
+                      _buildTextField(
+                        controller: noHpController,
+                        keyboardType: TextInputType.phone,
+                      ),
 
-                  return Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12.withOpacity(0.05),
-                          blurRadius: 6,
-                          offset: const Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildLabel('Nama Lengkap'),
-                        _buildTextField(controller: namaController),
+                      _buildLabel(
+                        'Password Baru (kosongkan jika tidak diganti)',
+                      ),
+                      _buildTextField(
+                        controller: passwordBaruController,
+                        obscureText: true,
+                      ),
 
-                        _buildLabel('Email'),
-                        _buildTextField(controller: emailController),
+                      _buildLabel('Konfirmasi Password Baru'),
+                      _buildTextField(
+                        controller: konfirmasiPasswordController,
+                        obscureText: true,
+                      ),
 
-                        _buildLabel('Nomor HP'),
-                        _buildTextField(
-                          controller: noHpController,
-                          keyboardType: TextInputType.phone,
-                        ),
+                      _buildLabel('Role (tidak dapat diubah)'),
+                      _buildDisabledDropdown(jabatan),
 
-                        _buildLabel(
-                          'Password Baru (kosongkan jika tidak diganti)',
-                        ),
-                        _buildTextField(
-                          controller: passwordBaruController,
-                          obscureText: true,
-                        ),
+                      const SizedBox(height: 24),
 
-                        _buildLabel('Konfirmasi Password Baru'),
-                        _buildTextField(
-                          controller: konfirmasiPasswordController,
-                          obscureText: true,
-                        ),
-
-                        _buildLabel('Role (tidak dapat diubah)'),
-                        _buildDisabledDropdown(jabatan),
-
-                        const SizedBox(height: 24),
-
-                        Align(
-                          alignment: isMobile
-                              ? Alignment.center
-                              : Alignment.centerLeft,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text(
-                                    "Data pengguna diperbarui! 🎉",
-                                  ),
-                                  backgroundColor: Colors.green.shade600,
-                                  behavior: SnackBarBehavior.floating,
+                      Align(
+                        alignment: isMobile
+                            ? Alignment.center
+                            : Alignment.centerLeft,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Text(
+                                  "Data pengguna diperbarui! 🎉",
                                 ),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: primaryColor,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 14,
+                                backgroundColor: Colors.green.shade600,
+                                behavior: SnackBarBehavior.floating,
                               ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              elevation: 0,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: primaryColor,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 14,
                             ),
-                            child: Text(
-                              'Perbarui',
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                              ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 0,
+                          ),
+                          child: Text(
+                            'Perbarui',
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
     );
