@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'pengeluaran_detail_screen.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class PengeluaranDaftarScreen extends StatelessWidget {
   const PengeluaranDaftarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Color primaryColor = const Color(0xFF635BFF); // ungu sesuai gambar
-    final Color bgColor = const Color(0xFFF5F7FB); // abu-abu muda background
+    final Color primaryColor = const Color(0xFF635BFF);
 
     final data = [
       {
@@ -27,21 +27,9 @@ class PengeluaranDaftarScreen extends StatelessWidget {
       },
     ];
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        title: Text(
-          'Daftar Pengeluaran',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: bgColor,
-        elevation: 0,
-        centerTitle: false,
-      ),
-      body: LayoutBuilder(
+    return DashboardLayout(
+      title: 'Daftar Pengeluaran',
+      child: LayoutBuilder(
         builder: (context, constraints) {
           bool isMobile = constraints.maxWidth < 700;
 
@@ -165,78 +153,68 @@ class PengeluaranDaftarScreen extends StatelessWidget {
                                 DataCell(
                                   SizedBox(
                                     width: 40,
-                                    child: IconButton(
-                                      padding: EdgeInsets.zero,
-                                      constraints: const BoxConstraints(),
-                                      icon: const Icon(
-                                        Icons.more_horiz,
-                                        size: 20,
-                                      ),
-                                      onPressed: () {
-                                        final RenderBox button =
-                                            context.findRenderObject()
-                                                as RenderBox;
-                                        final RenderBox overlay =
-                                            Navigator.of(context)
-                                                    .overlay!
-                                                    .context
-                                                    .findRenderObject()
-                                                as RenderBox;
-                                        final RelativeRect position =
-                                            RelativeRect.fromRect(
-                                              Rect.fromPoints(
+                                    child: Builder(
+                                      builder: (BuildContext buttonContext) {
+                                        return IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(),
+                                          icon: const Icon(
+                                            Icons.more_horiz,
+                                            size: 20,
+                                          ),
+                                          onPressed: () {
+                                            final RenderBox button =
+                                                buttonContext.findRenderObject()
+                                                    as RenderBox;
+                                            final RenderBox overlay =
+                                                Navigator.of(context)
+                                                        .overlay!
+                                                        .context
+                                                        .findRenderObject()
+                                                    as RenderBox;
+                                            final Offset buttonPosition =
                                                 button.localToGlobal(
-                                                  Offset.zero,
-                                                  ancestor: overlay,
-                                                ),
-                                                button.localToGlobal(
-                                                  button.size.bottomRight(
-                                                    Offset.zero,
-                                                  ),
-                                                  ancestor: overlay,
-                                                ),
-                                              ),
-                                              Offset.zero & overlay.size,
+                                              Offset.zero,
+                                              ancestor: overlay,
                                             );
 
-                                        showMenu<String>(
-                                          context: context,
-                                          position: position,
-                                          color: Colors.white,
-                                          items: [
-                                            PopupMenuItem<String>(
-                                              value: 'detail',
-                                              child: Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.info_outline,
-                                                    size: 20,
-                                                    color: Colors.black54,
-                                                  ),
-                                                  const SizedBox(width: 12),
-                                                  Text(
+                                            showMenu<String>(
+                                              context: context,
+                                              position: RelativeRect.fromLTRB(
+                                                buttonPosition.dx,
+                                                buttonPosition.dy +
+                                                    button.size.height,
+                                                buttonPosition.dx +
+                                                    button.size.width,
+                                                buttonPosition.dy,
+                                              ),
+                                              color: Colors.white,
+                                              items: [
+                                                PopupMenuItem<String>(
+                                                  value: 'detail',
+                                                  child: Text(
                                                     'Detail',
                                                     style: GoogleFonts.inter(
                                                       fontSize: 14,
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ).then((value) {
-                                          if (value == 'detail') {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PengeluaranDetailScreen(
-                                                      data: item,
-                                                    ),
-                                              ),
-                                            );
-                                          }
-                                        });
+                                                ),
+                                              ],
+                                            ).then((value) {
+                                              if (value == 'detail') {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PengeluaranDetailScreen(
+                                                          data: item,
+                                                        ),
+                                                  ),
+                                                );
+                                              }
+                                            });
+                                          },
+                                        );
                                       },
                                     ),
                                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class PengeluaranDetailScreen extends StatelessWidget {
   final Map<String, String> data;
@@ -9,84 +10,70 @@ class PengeluaranDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color primaryColor = const Color(0xFF635BFF);
-    final Color bgColor = const Color(0xFFF5F7FB);
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        title: Text(
-          'Detail Pengeluaran',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: bgColor,
-        elevation: 0,
-        centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: Center(
+    return DashboardLayout(
+      title: 'Detail Pengeluaran',
+      child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Container(
-            constraints: const BoxConstraints(maxWidth: 600),
-            padding: const EdgeInsets.all(24.0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Informasi Pengeluaran',
-                  style: GoogleFonts.inter(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                _buildDetailRow('Nama', data['nama'] ?? '-'),
-                _buildDetailRow('Jenis Pengeluaran', data['jenis'] ?? '-'),
-                _buildDetailRow('Tanggal', data['tanggal'] ?? '-'),
-                _buildDetailRow('Nominal', data['nominal'] ?? '-'),
-                const SizedBox(height: 32),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () => Navigator.pop(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      elevation: 0,
-                    ),
-                    child: Text(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Tombol kembali
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.arrow_back, size: 20, color: primaryColor),
+                    const SizedBox(width: 4),
+                    Text(
                       'Kembali',
                       style: GoogleFonts.inter(
-                        color: Colors.white,
-                        fontSize: 16,
+                        color: primaryColor,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+
+              Container(
+                constraints: const BoxConstraints(maxWidth: 600),
+                padding: const EdgeInsets.all(24.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12.withOpacity(0.05),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Informasi Pengeluaran',
+                      style: GoogleFonts.inter(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildDetailRow('Nama', data['nama'] ?? '-'),
+                    _buildDetailRow('Jenis Pengeluaran', data['jenis'] ?? '-'),
+                    _buildDetailRow('Tanggal', data['tanggal'] ?? '-'),
+                    _buildDetailRow('Nominal', data['nominal'] ?? '-'),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

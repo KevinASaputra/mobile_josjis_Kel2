@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class PengeluaranTambahScreen extends StatefulWidget {
   const PengeluaranTambahScreen({super.key});
@@ -20,7 +21,6 @@ class _PengeluaranTambahScreenState extends State<PengeluaranTambahScreen> {
   File? _buktiFile;
 
   final Color primaryColor = const Color(0xFF635BFF);
-  final Color bgColor = const Color(0xFFF5F7FB);
 
   Future<void> _pickDate() async {
     final picked = await showDatePicker(
@@ -91,20 +91,9 @@ class _PengeluaranTambahScreenState extends State<PengeluaranTambahScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        title: Text(
-          'Buat Pengeluaran Baru',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: bgColor,
-        elevation: 0,
-      ),
-      body: LayoutBuilder(
+    return DashboardLayout(
+      title: 'Buat Pengeluaran Baru',
+      child: LayoutBuilder(
         builder: (context, constraints) {
           bool isMobile = constraints.maxWidth < 700;
 
