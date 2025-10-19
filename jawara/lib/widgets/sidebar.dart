@@ -14,6 +14,9 @@ class _SidebarState extends State<Sidebar> {
     'Data Warga & Rumah': false,
     'Kegiatan & Broadcast': false,
     'Penerimaan Warga': false,
+    'Mutasi Keluarga': false,
+    'Manajemen Pengguna': false,
+    'Channel Transfer': false,
     'Log Aktifitas': false,
   };
 
@@ -116,6 +119,33 @@ class _SidebarState extends State<Sidebar> {
                 'Tambah Rumah',
                 '/rumah/tambah',
                 Icons.add_home,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
+          // Pengeluaran Section
+          ExpansionTile(
+            title: Text(
+              'Pengeluaran',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.money_off, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Daftar Pengeluaran',
+                '/pengeluaran/daftar',
+                Icons.list_alt,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Tambah Pengeluaran',
+                '/pengeluaran/tambah',
+                Icons.add_circle_outline,
                 indent: 16,
               ),
             ],
@@ -257,6 +287,60 @@ class _SidebarState extends State<Sidebar> {
                 'Semua Aktifitas',
                 '/log/aktifitas',
                 Icons.list,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
+          // Manajemen Pengguna Section
+          ExpansionTile(
+            title: Text(
+              'Manajemen Pengguna',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.manage_accounts, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Pengguna - Daftar',
+                '/manajemen-pengguna/daftar',
+                Icons.list_alt,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Pengguna - Tambah',
+                '/manajemen-pengguna/tambah',
+                Icons.person_add,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
+          // Channel Transfer Section
+          ExpansionTile(
+            title: Text(
+              'Channel Transfer',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.transfer_within_a_station, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Channel - Daftar',
+                '/channel-transfer/daftar',
+                Icons.list_alt,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Channel - Tambah',
+                '/channel-transfer/tambah',
+                Icons.add_box,
                 indent: 16,
               ),
             ],
