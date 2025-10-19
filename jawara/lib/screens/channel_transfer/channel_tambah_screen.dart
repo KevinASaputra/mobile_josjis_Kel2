@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class ChannelTambahScreen extends StatefulWidget {
   const ChannelTambahScreen({super.key});
@@ -70,7 +71,7 @@ class _ChannelTambahScreenState extends State<ChannelTambahScreen> {
       ),
     );
 
-    Overlay.of(context).insert(overlayEntry!);
+    Overlay.of(context).insert(overlayEntry);
     Future.delayed(const Duration(seconds: 3), () {
       overlayEntry?.remove();
     });
@@ -79,154 +80,165 @@ class _ChannelTambahScreenState extends State<ChannelTambahScreen> {
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF635BFF);
-    const Color bgColor = Color(0xFFF5F7FB);
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
+    return DashboardLayout(
+      title: 'Buat Transfer Channel',
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Container(
           padding: const EdgeInsets.all(16),
-          child: Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Title
-                Text(
-                  'Buat Transfer Channel',
-                  style: GoogleFonts.inter(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Nama Channel
+              _buildLabel('Nama Channel'),
+              _buildTextField(
+                controller: namaController,
+                hintText: 'Contoh: BCA, Dana, QRIS RT',
+              ),
 
-                // Nama Channel
-                _buildLabel('Nama Channel'),
-                _buildTextField(
-                  controller: namaController,
-                  hintText: 'Contoh: BCA, Dana, QRIS RT',
+              const SizedBox(height: 16),
+
+              // Tipe Dropdown
+              _buildLabel('Tipe'),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-
-                const SizedBox(height: 16),
-
-                // Tipe Dropdown
-                _buildLabel('Tipe'),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade300),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      hint: Text('-- Pilih Tipe --', style: GoogleFonts.inter(color: Colors.grey)),
-                      value: selectedTipe,
-                      isExpanded: true,
-                      items: ['E-Wallet', 'Bank', 'QRIS']
-                          .map((tipe) => DropdownMenuItem(
-                                value: tipe,
-                                child: Text(tipe, style: GoogleFonts.inter(fontSize: 14)),
-                              ))
-                          .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedTipe = value;
-                        });
-                      },
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    hint: Text(
+                      '-- Pilih Tipe --',
+                      style: GoogleFonts.inter(color: Colors.grey),
                     ),
+                    value: selectedTipe,
+                    isExpanded: true,
+                    items: ['E-Wallet', 'Bank', 'QRIS']
+                        .map(
+                          (tipe) => DropdownMenuItem(
+                            value: tipe,
+                            child: Text(
+                              tipe,
+                              style: GoogleFonts.inter(fontSize: 14),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedTipe = value;
+                      });
+                    },
                   ),
                 ),
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                // Nomor Rekening
-                _buildLabel('Nomor Rekening / Akun'),
-                _buildTextField(
-                  controller: nomorController,
-                  hintText: 'Contoh: 1234567890',
-                ),
+              // Nomor Rekening
+              _buildLabel('Nomor Rekening / Akun'),
+              _buildTextField(
+                controller: nomorController,
+                hintText: 'Contoh: 1234567890',
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                // Nama Pemilik
-                _buildLabel('Nama Pemilik'),
-                _buildTextField(
-                  controller: pemilikController,
-                  hintText: 'Contoh: John Doe',
-                ),
+              // Nama Pemilik
+              _buildLabel('Nama Pemilik'),
+              _buildTextField(
+                controller: pemilikController,
+                hintText: 'Contoh: John Doe',
+              ),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                // QR Upload Box
-                _buildLabel('QR'),
-                _buildUploadBox('Upload foto QR (jika ada) png/jpeg/jpg'),
+              // QR Upload Box
+              _buildLabel('QR'),
+              _buildUploadBox('Upload foto QR (jika ada) png/jpeg/jpg'),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                // Thumbnail Upload Box
-                _buildLabel('Thumbnail'),
-                _buildUploadBox('Upload thumbnail (jika ada) png/jpeg/jpg'),
+              // Thumbnail Upload Box
+              _buildLabel('Thumbnail'),
+              _buildUploadBox('Upload thumbnail (jika ada) png/jpeg/jpg'),
 
-                const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-                // Catatan
-                _buildLabel('Catatan (Opsional)'),
-                _buildTextField(
-                  controller: catatanController,
-                  hintText: 'Contoh: Transfer hanya dari bank yang sama agar instan',
-                  maxLines: 3,
-                ),
+              // Catatan
+              _buildLabel('Catatan (Opsional)'),
+              _buildTextField(
+                controller: catatanController,
+                hintText:
+                    'Contoh: Transfer hanya dari bank yang sama agar instan',
+                maxLines: 3,
+              ),
 
-                const SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-                // Buttons
-                Row(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: primaryColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              // Buttons
+              Row(
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
                       ),
-                      onPressed: () {
-                        _showSuccessNotification('Channel berhasil ditambahkan 🎉');
-                      },
-                      child: Text('Simpan', style: GoogleFonts.inter(color: Colors.white)),
-                    ),
-                    const SizedBox(width: 12),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        backgroundColor: Colors.grey.shade100,
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      onPressed: _resetForm,
-                      child: Text('Reset', style: GoogleFonts.inter(color: Colors.black87)),
                     ),
-                  ],
-                ),
-              ],
-            ),
+                    onPressed: () {
+                      _showSuccessNotification(
+                        'Channel berhasil ditambahkan 🎉',
+                      );
+                    },
+                    child: Text(
+                      'Simpan',
+                      style: GoogleFonts.inter(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.grey.shade100,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    onPressed: _resetForm,
+                    child: Text(
+                      'Reset',
+                      style: GoogleFonts.inter(color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  // ===== Helper Widgets =====
+  } // ===== Helper Widgets =====
 
   Widget _buildLabel(String label) {
     return Padding(
@@ -254,7 +266,10 @@ class _ChannelTambahScreenState extends State<ChannelTambahScreen> {
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: GoogleFonts.inter(color: Colors.grey),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 12,
+        ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide(color: Colors.grey.shade300),

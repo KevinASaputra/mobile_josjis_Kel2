@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'channel_detail_screen.dart';
 import 'channel_edit_screen.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class ChannelDaftarScreen extends StatelessWidget {
   const ChannelDaftarScreen({super.key});
@@ -9,7 +10,6 @@ class ChannelDaftarScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const Color primaryColor = Color(0xFF635BFF);
-    const Color bgColor = Color(0xFFF5F7FB);
 
     final List<Map<String, String>> data = [
       {
@@ -42,20 +42,9 @@ class ChannelDaftarScreen extends StatelessWidget {
       },
     ];
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      appBar: AppBar(
-        title: Text(
-          'Daftar Channel',
-          style: GoogleFonts.inter(
-            fontWeight: FontWeight.w600,
-            color: Colors.black87,
-          ),
-        ),
-        backgroundColor: bgColor,
-        elevation: 0,
-      ),
-      body: LayoutBuilder(
+    return DashboardLayout(
+      title: 'Daftar Channel',
+      child: LayoutBuilder(
         builder: (context, constraints) {
           bool isMobile = constraints.maxWidth < 700;
 

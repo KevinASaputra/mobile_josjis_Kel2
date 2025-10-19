@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../widgets/dashboard_layout.dart';
 
 class ChannelDetailScreen extends StatelessWidget {
   final Map<String, String> channelData;
@@ -8,7 +9,6 @@ class ChannelDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color bgColor = Color(0xFFF5F7FB);
     const Color primaryColor = Color(0xFF635BFF);
 
     // Use the passed channel data
@@ -21,77 +21,64 @@ class ChannelDetailScreen extends StatelessWidget {
           channelData['thumbnail'] ?? '', // Use thumbnail as catatan for now
     };
 
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Tombol kembali
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.arrow_back, size: 20, color: primaryColor),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Kembali',
-                      style: GoogleFonts.inter(
-                        color: primaryColor,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
+    return DashboardLayout(
+      title: 'Detail Transfer Channel',
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Tombol kembali
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.arrow_back, size: 20, color: primaryColor),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Kembali',
+                    style: GoogleFonts.inter(
+                      color: primaryColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
+            ),
+            const SizedBox(height: 20),
 
-              // Judul
-              Text(
-                'Detail Transfer Channel',
-                style: GoogleFonts.inter(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black87,
-                ),
+            // Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12.withOpacity(0.05),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-
-              // Card
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12.withOpacity(0.05),
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildLabelValue('Nama Channel', channel['nama']!),
-                    _buildLabelValue('Tipe Channel', channel['tipe']!),
-                    _buildLabelValue(
-                      'Nomor Rekening / Akun',
-                      channel['rekening']!,
-                    ),
-                    _buildLabelValue('Nama Pemilik', channel['pemilik']!),
-                    _buildLabelValue('Catatan', channel['catatan']!),
-                  ],
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildLabelValue('Nama Channel', channel['nama']!),
+                  _buildLabelValue('Tipe Channel', channel['tipe']!),
+                  _buildLabelValue(
+                    'Nomor Rekening / Akun',
+                    channel['rekening']!,
+                  ),
+                  _buildLabelValue('Nama Pemilik', channel['pemilik']!),
+                  _buildLabelValue('Catatan', channel['catatan']!),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
