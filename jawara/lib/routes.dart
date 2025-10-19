@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 // Auth
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart';
+import 'package:jawara/screens/laporan_keuangan/laporan_pemasukan_screen.dart';
+import 'package:jawara/screens/laporan_keuangan/laporan_pengeluaran_screen.dart';
+import 'package:jawara/screens/laporan_keuangan/cetak_laporan_screen.dart';
+import 'package:jawara/screens/mutasi_keluarga/mutasi_daftar_screen.dart';
+import 'package:jawara/screens/mutasi_keluarga/mutasi_tambah_screen.dart';
+import 'package:jawara/screens/penerimaan_warga/penerimaan_warga_screen.dart';
 
 // Dashboard
 import 'screens/dashboard/keuangan_screen.dart';
