@@ -10,6 +10,8 @@ import 'screens/auth/register_screen.dart';
 import 'package:jawara/screens/laporan_keuangan/laporan_pemasukan_screen.dart';
 import 'package:jawara/screens/laporan_keuangan/laporan_pengeluaran_screen.dart';
 import 'package:jawara/screens/laporan_keuangan/cetak_laporan_screen.dart';
+import 'package:jawara/screens/mutasi_keluarga/mutasi_daftar_screen.dart';
+import 'package:jawara/screens/mutasi_keluarga/mutasi_tambah_screen.dart';
 
 Map<String, WidgetBuilder> routes = {
   '/login': (context) => const LoginScreen(),
@@ -24,4 +26,6 @@ Map<String, WidgetBuilder> routes = {
   '/laporan-keuangan/pengeluaran': (context) =>
       const LaporanPengeluaranScreen(),
   '/laporan-keuangan/cetak': (context) => const CetakLaporanScreen(),
+  '/mutasi-keluarga/daftar': (context) => const MutasiDaftarScreen(),
+  '/mutasi-keluarga/tambah': (context) => const MutasiTambahScreen(),
 };

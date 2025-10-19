@@ -197,6 +197,33 @@ class _SidebarState extends State<Sidebar> {
 
           const Divider(),
 
+          // Mutasi Keluarga Section
+          ExpansionTile(
+            title: Text(
+              'Mutasi Keluarga',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.swap_horiz, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Daftar',
+                '/mutasi-keluarga/daftar',
+                Icons.list,
+                indent: 16,
+              ),
+              _buildNavItem(
+                context,
+                'Tambah',
+                '/mutasi-keluarga/tambah',
+                Icons.add,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
           ExpansionTile(
             title: Text(
               'Log Aktifitas',
