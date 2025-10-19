@@ -14,6 +14,7 @@ import 'package:jawara/screens/kegiatan_broadcast/broadcast_tambah_screen.dart';
 import 'package:jawara/screens/log_aktifitas/semua_aktifitas_screen.dart';
 import 'package:jawara/screens/mutasi_keluarga/mutasi_daftar_screen.dart';
 import 'package:jawara/screens/mutasi_keluarga/mutasi_tambah_screen.dart';
+import 'package:jawara/screens/penerimaan_warga/penerimaan_warga_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
         '/laporan-keuangan/cetak': (context) => const CetakLaporanScreen(),
         '/mutasi-keluarga/daftar': (context) => const MutasiDaftarScreen(),
         '/mutasi-keluarga/tambah': (context) => const MutasiTambahScreen(),
+        '/penerimaan-warga/daftar': (context) => const PenerimaanWargaScreen(),
       },
     );
   }

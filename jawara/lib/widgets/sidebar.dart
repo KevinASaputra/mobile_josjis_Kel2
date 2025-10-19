@@ -13,6 +13,7 @@ class _SidebarState extends State<Sidebar> {
     'Laporan Keuangan': false,
     'Data Warga & Rumah': false,
     'Kegiatan & Broadcast': false,
+    'Penerimaan Warga': false,
     'Log Aktifitas': false,
   };
 
@@ -190,6 +191,26 @@ class _SidebarState extends State<Sidebar> {
                 'Broadcast - Tambah',
                 '/broadcast/tambah',
                 Icons.add_box,
+                indent: 16,
+              ),
+            ],
+          ),
+
+          const Divider(),
+
+          // Penerimaan Warga Section
+          ExpansionTile(
+            title: Text(
+              'Penerimaan Warga',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.person_add, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Penerimaan Warga',
+                '/penerimaan-warga/daftar',
+                Icons.list_alt,
                 indent: 16,
               ),
             ],
