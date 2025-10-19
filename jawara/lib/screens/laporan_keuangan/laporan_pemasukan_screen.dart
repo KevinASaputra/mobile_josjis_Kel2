@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/sidebar.dart';
+import 'laporan_pemasukan_detail_screen.dart'; // added import
 
 class LaporanPemasukanScreen extends StatefulWidget {
   const LaporanPemasukanScreen({super.key});
@@ -18,20 +19,76 @@ class _LaporanPemasukanScreenState extends State<LaporanPemasukanScreen> {
     {
       'no': 1,
       'nama': 'Iuran RT 05',
-      'jenis': 'Iuran Warga',
+      'kategori': 'Iuran Warga',
       'nominal': 150000,
-      'tanggal': '12 Oktober 2025',
+      'tanggal': DateTime(2025, 10, 12),
       'keterangan': 'Iuran bulanan RT',
+      'verifikator': 'Admin A',
     },
     {
       'no': 2,
       'nama': 'Donatur A',
-      'jenis': 'Donasi',
+      'kategori': 'Donasi',
       'nominal': 250000,
-      'tanggal': '20 Oktober 2025',
+      'tanggal': DateTime(2025, 10, 20),
       'keterangan': 'Donasi acara kebersihan',
+      'verifikator': 'Admin B',
     },
   ];
+
+  // --- filter state ---
+  String? _filterNama;
+  String _filterKategori = 'Semua';
+  DateTime? _filterDari;
+  DateTime? _filterSampai;
+
+  List<String> get _kategoriOptions {
+    final set = <String>{};
+    for (var e in pemasukanData) {
+      if (e['kategori'] != null) set.add(e['kategori'] as String);
+    }
+    final list = set.toList()..sort();
+    return ['Semua', ...list];
+  }
+
+  List<Map<String, dynamic>> get _filteredPemasukanData {
+    return pemasukanData.where((item) {
+      final matchesNama = _filterNama == null || _filterNama!.isEmpty
+          ? true
+          : (item['nama']?.toString().toLowerCase() ?? '').contains(
+              _filterNama!.toLowerCase(),
+            );
+      final matchesKategori =
+          _filterKategori == 'Semua' || item['kategori'] == _filterKategori;
+      final tanggal = item['tanggal'] as DateTime?;
+      final matchesDari =
+          _filterDari == null ||
+          (tanggal != null && !tanggal.isBefore(_filterDari!));
+      final matchesSampai =
+          _filterSampai == null ||
+          (tanggal != null && !tanggal.isAfter(_filterSampai!));
+      return matchesNama && matchesKategori && matchesDari && matchesSampai;
+    }).toList();
+  }
+  // --- end filter state ---
+
+  Future<void> _pickDate(BuildContext context, bool isDari) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isDari) {
+          _filterDari = picked;
+        } else {
+          _filterSampai = picked;
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,28 +119,46 @@ class _LaporanPemasukanScreenState extends State<LaporanPemasukanScreen> {
             ),
             child: Column(
               children: [
+                // filter button (opens dialog)
                 Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF6366F1),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final result = await showDialog<Map<String, dynamic>>(
+                          context: context,
+                          builder: (context) => _FilterDialog(
+                            nama: _filterNama,
+                            kategori: _filterKategori,
+                            dari: _filterDari,
+                            sampai: _filterSampai,
+                            kategoriOptions: _kategoriOptions,
+                          ),
+                        );
+                        if (result != null) {
+                          setState(() {
+                            _filterNama = result['nama'] as String?;
+                            _filterKategori =
+                                result['kategori'] as String? ?? 'Semua';
+                            _filterDari = result['dari'] as DateTime?;
+                            _filterSampai = result['sampai'] as DateTime?;
+                          });
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF6366F1),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: IconButton(
-                          onPressed: () {
-                            // filter action (implement as needed)
-                          },
-                          icon: const Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                            size: 20,
-                          ),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 18,
                         ),
+                        elevation: 0,
                       ),
-                    ],
+                      child: const Icon(Icons.filter_list, color: Colors.white),
+                    ),
                   ),
                 ),
 
@@ -113,18 +188,22 @@ class _LaporanPemasukanScreenState extends State<LaporanPemasukanScreen> {
                       columns: const [
                         DataColumn(label: Text('No')),
                         DataColumn(label: Text('Nama')),
-                        DataColumn(label: Text('Jenis Pemasukan')),
+                        DataColumn(label: Text('Kategori')),
                         DataColumn(label: Text('Tanggal')),
                         DataColumn(label: Text('Nominal')),
                         DataColumn(label: Text('Aksi')),
                       ],
-                      rows: pemasukanData.map((item) {
+                      rows: _filteredPemasukanData.map((item) {
+                        final tanggal = item['tanggal'] as DateTime?;
+                        final tanggalText = tanggal == null
+                            ? '-'
+                            : '${tanggal.day}/${tanggal.month}/${tanggal.year}';
                         return DataRow(
                           cells: [
                             DataCell(Text(item['no'].toString())),
                             DataCell(Text(item['nama'] ?? 'N/A')),
-                            DataCell(Text(item['jenis'] ?? 'N/A')),
-                            DataCell(Text(item['tanggal'] ?? 'N/A')),
+                            DataCell(Text(item['kategori'] ?? 'N/A')),
+                            DataCell(Text(tanggalText)),
                             DataCell(Text('Rp ${item['nominal'].toString()}')),
                             DataCell(
                               PopupMenuButton<String>(
@@ -140,38 +219,14 @@ class _LaporanPemasukanScreenState extends State<LaporanPemasukanScreen> {
                                 color: Colors.white,
                                 onSelected: (value) {
                                   if (value == 'detail') {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text('Detail Pemasukan'),
-                                          content: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text('Nama: ${item['nama']}'),
-                                              Text('Jenis: ${item['jenis']}'),
-                                              Text(
-                                                'Tanggal: ${item['tanggal']}',
-                                              ),
-                                              Text(
-                                                'Nominal: Rp ${item['nominal']}',
-                                              ),
-                                              Text(
-                                                'Keterangan: ${item['keterangan'] ?? '-'}',
-                                              ),
-                                            ],
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: const Text('Tutup'),
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            LaporanPemasukanDetailScreen(
+                                              data: item,
                                             ),
-                                          ],
-                                        );
-                                      },
+                                      ),
                                     );
                                   }
                                 },
@@ -271,6 +326,149 @@ class _LaporanPemasukanScreenState extends State<LaporanPemasukanScreen> {
           ),
         ),
       ),
+    );
+  }
+}
+
+// --- Filter Dialog ---
+class _FilterDialog extends StatefulWidget {
+  final String? nama;
+  final String kategori;
+  final DateTime? dari;
+  final DateTime? sampai;
+  final List<String> kategoriOptions;
+
+  const _FilterDialog({
+    this.nama,
+    required this.kategori,
+    this.dari,
+    this.sampai,
+    required this.kategoriOptions,
+  });
+
+  @override
+  State<_FilterDialog> createState() => _FilterDialogState();
+}
+
+class _FilterDialogState extends State<_FilterDialog> {
+  late TextEditingController _namaController;
+  late String _kategori;
+  DateTime? _dari;
+  DateTime? _sampai;
+
+  @override
+  void initState() {
+    super.initState();
+    _namaController = TextEditingController(text: widget.nama);
+    _kategori = widget.kategori;
+    _dari = widget.dari;
+    _sampai = widget.sampai;
+  }
+
+  Future<void> _pickDate(BuildContext context, bool isDari) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: isDari
+          ? (_dari ?? DateTime.now())
+          : (_sampai ?? DateTime.now()),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        if (isDari)
+          _dari = picked;
+        else
+          _sampai = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      title: const Text('Filter Pemasukan'),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: _namaController,
+              decoration: const InputDecoration(labelText: 'Nama'),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              value: _kategori,
+              items: widget.kategoriOptions
+                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                  .toList(),
+              onChanged: (v) => setState(() => _kategori = v ?? 'Semua'),
+              decoration: const InputDecoration(labelText: 'Kategori'),
+            ),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: () => _pickDate(context, true),
+              child: AbsorbPointer(
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Dari Tanggal',
+                    hintText: _dari == null
+                        ? ''
+                        : '${_dari!.day}/${_dari!.month}/${_dari!.year}',
+                    suffixIcon: const Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            GestureDetector(
+              onTap: () => _pickDate(context, false),
+              child: AbsorbPointer(
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Sampai Tanggal',
+                    hintText: _sampai == null
+                        ? ''
+                        : '${_sampai!.day}/${_sampai!.month}/${_sampai!.year}',
+                    suffixIcon: const Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            setState(() {
+              _namaController.clear();
+              _kategori = 'Semua';
+              _dari = null;
+              _sampai = null;
+            });
+          },
+          child: const Text('Reset'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.of(context).pop({
+              'nama': _namaController.text.isEmpty
+                  ? null
+                  : _namaController.text,
+              'kategori': _kategori,
+              'dari': _dari,
+              'sampai': _sampai,
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color(0xFF6366F1),
+          ),
+          child: const Text('Terapkan', style: TextStyle(color: Colors.white)),
+        ),
+      ],
     );
   }
 }
