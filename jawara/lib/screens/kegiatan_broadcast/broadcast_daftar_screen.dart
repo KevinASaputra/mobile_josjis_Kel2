@@ -12,7 +12,6 @@ class _BroadcastDaftarScreenState extends State<BroadcastDaftarScreen> {
   int currentPage = 1;
   int totalPages = 1;
 
-  // Sample data for broadcast list
   final List<Map<String, dynamic>> broadcastData = [
     {
       'no': 1,
@@ -57,7 +56,6 @@ class _BroadcastDaftarScreenState extends State<BroadcastDaftarScreen> {
             ),
             child: Column(
               children: [
-                // Filter button section
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Row(
@@ -70,7 +68,6 @@ class _BroadcastDaftarScreenState extends State<BroadcastDaftarScreen> {
                         ),
                         child: IconButton(
                           onPressed: () {
-                            // Handle filter action
                           },
                           icon: const Icon(
                             Icons.filter_alt,
@@ -82,8 +79,7 @@ class _BroadcastDaftarScreenState extends State<BroadcastDaftarScreen> {
                     ],
                   ),
                 ),
-                
-                // Data Table
+
                 Expanded(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -192,15 +188,12 @@ class _BroadcastDaftarScreenState extends State<BroadcastDaftarScreen> {
                                   onSelected: (value) {
                                     switch (value) {
                                       case 'detail':
-                                        // Handle detail
                                         print('Detail selected');
                                         break;
                                       case 'edit':
-                                        // Handle edit
                                         print('Edit selected');
                                         break;
                                       case 'hapus':
-                                        // Handle delete
                                         print('Hapus selected');
                                         break;
                                     }
@@ -289,7 +282,6 @@ class _BroadcastDaftarScreenState extends State<BroadcastDaftarScreen> {
                   ),
                 ),
                 
-                // Pagination
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Row(

@@ -12,6 +12,7 @@ class _SidebarState extends State<Sidebar> {
     'Dashboard': false,
     'Data Warga & Rumah': false,
     'Kegiatan & Broadcast': false,
+    'Log Aktifitas': false,
   };
 
   @override
@@ -154,6 +155,25 @@ class _SidebarState extends State<Sidebar> {
                 'Broadcast - Tambah',
                 '/broadcast/tambah',
                 Icons.add_box,
+                indent: 16,
+              ),
+            ],
+          ),
+          
+          const Divider(),
+
+          ExpansionTile(
+            title: Text(
+              'Log Aktifitas',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            ),
+            leading: Icon(Icons.history, size: 20),
+            children: [
+              _buildNavItem(
+                context,
+                'Semua Aktifitas',
+                '/log/aktifitas',
+                Icons.list,
                 indent: 16,
               ),
             ],
