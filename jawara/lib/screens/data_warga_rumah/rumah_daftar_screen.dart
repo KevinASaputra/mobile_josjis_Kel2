@@ -10,7 +10,7 @@ final List<Map<String, dynamic>> _dummyRumah = [
 
 class RumahDaftarScreen extends StatefulWidget {
   const RumahDaftarScreen({Key? key}) : super(key: key);
-  static const routeName = '/rumah-daftar';
+  static const routeName = '/rumah/daftar';
 
   @override
   _RumahDaftarScreenState createState() => _RumahDaftarScreenState();
@@ -32,7 +32,8 @@ class _RumahDaftarScreenState extends State<RumahDaftarScreen> {
   }
 
   Future<void> _openTambah() async {
-    final result = await Navigator.pushNamed(context, '/rumah-tambah');
+    // gunakan route '/rumah/tambah' — konsisten dengan rumah_tambah_screen.routeName
+    final result = await Navigator.pushNamed(context, '/rumah/tambah');
     if (result is Map<String, dynamic>) {
       setState(() {
         final nextId = (rumahList.isEmpty)
@@ -50,7 +51,7 @@ class _RumahDaftarScreenState extends State<RumahDaftarScreen> {
   Future<void> _openEdit(Map<String, dynamic> r) async {
     final result = await Navigator.pushNamed(
       context,
-      '/rumah-tambah',
+      '/rumah/tambah',
       arguments: r,
     );
     if (result is Map<String, dynamic>) {

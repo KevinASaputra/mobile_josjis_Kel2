@@ -4,7 +4,7 @@ import '../../widgets/dashboard_layout.dart';
 
 class RumahTambahScreen extends StatefulWidget {
   const RumahTambahScreen({Key? key}) : super(key: key);
-  static const routeName = '/rumah-tambah';
+  static const routeName = '/rumah/tambah';
 
   @override
   _RumahTambahScreenState createState() => _RumahTambahScreenState();
@@ -20,10 +20,11 @@ class _RumahTambahScreenState extends State<RumahTambahScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)?.settings.arguments;
-    if (args is Map<String, dynamic>) {
+    if (args is Map<String, dynamic> && args.isNotEmpty) {
       _editingId = args['id'] as int?;
-      _alamat.text = args['alamat'] ?? '';
+      _alamat.text = args['alamat']?.toString() ?? '';
       _nomor.text = args['nomor']?.toString() ?? '';
+      setState(() {});
     }
   }
 
@@ -36,7 +37,7 @@ class _RumahTambahScreenState extends State<RumahTambahScreen> {
 
   void _save() {
     if (!_formKey.currentState!.validate()) return;
-    final result = {
+    final result = <String, dynamic>{
       if (_editingId != null) 'id': _editingId,
       'alamat': _alamat.text.trim(),
       'nomor': _nomor.text.trim(),

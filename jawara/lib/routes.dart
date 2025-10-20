@@ -13,6 +13,12 @@ import 'package:jawara/screens/laporan_keuangan/cetak_laporan_screen.dart';
 import 'package:jawara/screens/mutasi_keluarga/mutasi_daftar_screen.dart';
 import 'package:jawara/screens/mutasi_keluarga/mutasi_tambah_screen.dart';
 import 'package:jawara/screens/penerimaan_warga/penerimaan_warga_screen.dart';
+// Data Warga & Rumah
+import 'screens/data_warga_rumah/warga_daftar_screen.dart';
+import 'screens/data_warga_rumah/rumah_daftar_screen.dart';
+import 'screens/data_warga_rumah/warga_tambah_screen.dart';
+import 'screens/data_warga_rumah/rumah_tambah_screen.dart';
+import 'screens/data_warga_rumah/keluarga_screen.dart';
 
 Map<String, WidgetBuilder> routes = {
   '/login': (context) => const LoginScreen(),
@@ -30,4 +36,10 @@ Map<String, WidgetBuilder> routes = {
   '/mutasi-keluarga/daftar': (context) => const MutasiDaftarScreen(),
   '/mutasi-keluarga/tambah': (context) => const MutasiTambahScreen(),
   '/penerimaan-warga/daftar': (context) => const PenerimaanWargaScreen(),
+  // Data Warga & Rumah
+  '/warga/daftar': (context) => const WargaDaftarScreen(),
+  '/rumah/daftar': (context) => const RumahDaftarScreen(),
+  '/warga/tambah': (context) => const WargaTambahScreen(),
+  '/rumah/tambah': (context) => const RumahTambahScreen(),
+  '/warga/keluarga': (context) => const KeluargaScreen(),
 };

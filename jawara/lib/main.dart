@@ -21,6 +21,11 @@ import 'package:jawara/screens/channel_transfer/channel_daftar_screen.dart';
 import 'package:jawara/screens/channel_transfer/channel_tambah_screen.dart';
 import 'package:jawara/screens/pengeluaran/pengeluaran_daftar_screen.dart';
 import 'package:jawara/screens/pengeluaran/pengeluaran_tambah_screen.dart';
+import 'screens/data_warga_rumah/warga_daftar_screen.dart';
+import 'screens/data_warga_rumah/rumah_daftar_screen.dart';
+import 'screens/data_warga_rumah/warga_tambah_screen.dart';
+import 'screens/data_warga_rumah/rumah_tambah_screen.dart';
+import 'screens/data_warga_rumah/keluarga_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,6 +69,11 @@ class MyApp extends StatelessWidget {
         '/channel-transfer/tambah': (context) => const ChannelTambahScreen(),
         '/pengeluaran/daftar': (context) => const PengeluaranDaftarScreen(),
         '/pengeluaran/tambah': (context) => const PengeluaranTambahScreen(),
+        '/warga/daftar': (context) => const WargaDaftarScreen(),
+        '/rumah/daftar': (context) => const RumahDaftarScreen(),
+        '/warga/tambah': (context) => const WargaTambahScreen(),
+        '/rumah/tambah': (context) => const RumahTambahScreen(),
+        '/warga/keluarga': (context) => const KeluargaScreen(),
       },
     );
   }
